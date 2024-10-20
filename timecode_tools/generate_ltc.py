@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-from tools import cint, ltc_encode
+from timecode_tools.tools import cint, ltc_encode
 from timecode import Timecode
+
 
 class MyByteArray:
   def __init__(self, size):
@@ -44,7 +45,7 @@ def gen_wave_header(data, rate=48000, bits=8, channels=1):
   return header
 
 
-def make_ltc(fps, start, duration, rate, bits, path):
+def make_ltc(fps, start, duration, rate, bits, filename):
   fps = float(fps)
   duration = float(duration)
   fmt = 'pcm_u8'
@@ -57,9 +58,11 @@ def make_ltc(fps, start, duration, rate, bits, path):
     fmt = 'pcm_s16le'
     on_val = 32767
     off_val = -32768
-  elif bits == 32 or bits == 64:
+  elif bits == 32 or bits == 64 or bits == 24:
     if bits == 32:
       fmt = 'pcm_f32le'
+    elif bits == 24:
+      fmt = 'pcm_f24le'
     else:
       fmt = 'pcm_f64le'
     on_val = 1.0
@@ -138,6 +141,5 @@ def make_ltc(fps, start, duration, rate, bits, path):
   wave_file_name = 'ltc--{}--{}fps--{}--{}--{}secs.wav'.format(
       start.replace(':', '_'), fps, rate, fmt, duration)
   print(f'Writing WAV File: {wave_file_name}')
-  write_wave_file(path, data.buffer, rate=rate, bits=bits)
+  write_wave_file(filename, data.buffer, rate=rate, bits=bits)
   print('DONE\n\n')
-
