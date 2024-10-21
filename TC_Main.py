@@ -94,7 +94,7 @@ def create_gui():
     def start_generation():
         start_timecode = start_timecode_entry.get()
         stop_timecode = stop_timecode_entry.get()
-        stop_minutes = (stop_timecode.split(':')[0]*60) + stop_timecode.split(':')[1]
+        stop_minutes = (int(stop_timecode.split(':')[0])*60) + int(stop_timecode.split(':')[1])
         fps = fps_entry.get()
         output_dir = output_dir_entry.get()
         offset = offsets_entry.get()
